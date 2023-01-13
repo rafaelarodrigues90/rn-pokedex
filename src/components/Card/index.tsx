@@ -11,6 +11,7 @@ export type PokemonType = {
 export type Pokemon = {
   id: number;
   name: string;
+  url: string;
   types: PokemonType[];
 };
 

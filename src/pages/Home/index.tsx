@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import * as s from "./styles";
 import api from "../../services/api";
-import { FlatList, Text, View } from "react-native";
+import { FlatList } from "react-native";
 import { Card, Pokemon, PokemonType } from "../../components/Card";
+import { FadeAnimation } from "../../components/FadeAnimation";
 
 // TODO: organizar entidades do projeto
 
@@ -16,8 +17,9 @@ export function Home() {
 
   useEffect(() => {
     async function getPokemonsList() {
+      // TODO: paginação
       // const response = await api.get("/pokemon?limit=1279");
-      const response = await api.get("/pokemon?limit=10");
+      const response = await api.get("/pokemon?limit=50");
       const { results } = response.data;
 
       const payloadPokemons = await Promise.all(
@@ -49,19 +51,17 @@ export function Home() {
     };
   }
 
-  const Item = ({ name }: any) => (
-    <View>
-      <Text>{name} </Text>
-    </View>
-  );
-
   return (
     <s.Container>
       <s.Content>
         <FlatList
           data={pokemons}
           keyExtractor={(pokemon) => pokemon.id.toString()}
-          renderItem={({ item: pokemon }) => <Card data={pokemon} />}
+          renderItem={({ item: pokemon }) => (
+            <FadeAnimation>
+              <Card data={pokemon} />
+            </FadeAnimation>
+          )}
         />
       </s.Content>
       <s.Footer></s.Footer>
