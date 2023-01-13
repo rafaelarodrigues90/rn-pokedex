@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components/native'
 export const Container = styled.View`
   ${({ theme }) => css`
     flex: 1;
-    background: ${theme.colors.backgroundWater};
+    background: ${theme.colors.backgroundTypes.water};
   `};
 `
 
@@ -16,7 +16,7 @@ export const Content = styled.View`
 export const Title = styled.Text`
   ${({ theme }) => css`
     font-size: 40px;
-    color: ${theme.colors.text_white};
+    color: ${theme.colors.text.white};
     margin-top: 20px;
   `}
 `
@@ -24,7 +24,7 @@ export const Title = styled.Text`
 export const Subtitle = styled.Text`
   ${({ theme }) => css`
     font-size: 16px;
-    color: ${theme.colors.text_white};
+    color: ${theme.colors.text.white};
     margin-top: 20px;
   `}
 `
