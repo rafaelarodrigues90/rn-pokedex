@@ -2,17 +2,9 @@ import React, { useEffect, useState } from "react";
 import * as s from "./styles";
 import api from "../../services/api";
 import { FlatList, Text, View } from "react-native";
+import { Card, Pokemon, PokemonType } from "../../components/Card";
 
-export type PokemonType = {
-  type: string;
-};
-
-export type Pokemon = {
-  id: number;
-  name: string;
-  url: string;
-  types: PokemonType[];
-};
+// TODO: organizar entidades do projeto
 
 export type GetMoreInfoResponse = {
   id: number;
@@ -24,7 +16,8 @@ export function Home() {
 
   useEffect(() => {
     async function getPokemonsList() {
-      const response = await api.get("/pokemon?limit=1279");
+      // const response = await api.get("/pokemon?limit=1279");
+      const response = await api.get("/pokemon?limit=10");
       const { results } = response.data;
 
       const payloadPokemons = await Promise.all(
@@ -62,14 +55,14 @@ export function Home() {
     </View>
   );
 
-  const renderItem = ({ item }: any) => {
-    return <Item name={item.name} />;
-  };
-
   return (
     <s.Container>
       <s.Content>
-        {pokemons && <FlatList data={pokemons} renderItem={renderItem} />}
+        <FlatList
+          data={pokemons}
+          keyExtractor={(pokemon) => pokemon.id.toString()}
+          renderItem={({ item: pokemon }) => <Card data={pokemon} />}
+        />
       </s.Content>
       <s.Footer></s.Footer>
     </s.Container>

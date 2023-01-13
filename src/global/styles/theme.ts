@@ -10,9 +10,8 @@ export default {
       white: '#FFFFFF',
       black: '#17171B',
       grey: '#747476',
-      number: '#17171B.6',
+      number: 'rgba(23, 23, 27, 0.6)',
     },
-    // card
     backgroundTypes: {
       water: '#58ABF6',
       steel: '#4C91B2',
@@ -33,7 +32,6 @@ export default {
       dark: '#6F6E78',
       bug: '#8BD674',
     },
-    // boxtype
     types: {
       water: '#4A90DA',
       steel: '#417D9A',
