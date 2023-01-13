@@ -3,48 +3,67 @@ import * as s from "./styles";
 import api from "../../services/api";
 import { FlatList, Text, View } from "react-native";
 
+export type PokemonType = {
+  type: string;
+};
+
 export type Pokemon = {
+  id: number;
   name: string;
   url: string;
-}[];
+  types: PokemonType[];
+};
+
+export type GetMoreInfoResponse = {
+  id: number;
+  types: PokemonType[];
+};
 
 export function Home() {
-  const [pokemons, setPokemons] = useState<Pokemon>([]);
-  const [pokemonInfo, setPokemonInfo] = useState();
-
-  const getPokemonsList = (): Pokemon => {
-    api
-      .get("/pokemon?limit=1000")
-      .then((response) => response.data)
-      .then((pokemons) => setPokemons(pokemons.results));
-
-    return pokemons;
-  };
-
-  const getMoreInfo = (url: string) => {
-    const formatUrl = url.substring(25);
-
-    api
-      .get(formatUrl)
-      .then((response) => response.data)
-      .then((pokemon) => setPokemonInfo(pokemon));
-
-    return pokemonInfo;
-  };
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   useEffect(() => {
-    const pokemons = getPokemonsList();
-  });
+    async function getPokemonsList() {
+      const response = await api.get("/pokemon?limit=1279");
+      const { results } = response.data;
 
-  const Item = ({ name, url }: any) => (
+      const payloadPokemons = await Promise.all(
+        results.map(async (pokemon: Pokemon) => {
+          const { id, types } = await getMoreInfo(pokemon.url);
+
+          return {
+            id,
+            name: pokemon.name,
+            types,
+          };
+        })
+      );
+
+      setPokemons(payloadPokemons);
+    }
+
+    getPokemonsList();
+  }, []);
+
+  async function getMoreInfo(url: string): Promise<GetMoreInfoResponse> {
+    const formatUrl = url.substring(25);
+
+    const { data } = await api.get(formatUrl);
+
+    return {
+      id: data.id,
+      types: data.types,
+    };
+  }
+
+  const Item = ({ name }: any) => (
     <View>
       <Text>{name} </Text>
-      <Text>{url} </Text>
     </View>
   );
 
   const renderItem = ({ item }: any) => {
-    return <Item name={item.name} url={item.url} />;
+    return <Item name={item.name} />;
   };
 
   return (
