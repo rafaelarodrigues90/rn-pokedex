@@ -4,7 +4,11 @@ import AnimatedLottieView from "lottie-react-native";
 import squirtleAnimation from "../../../assets/squirtle.json";
 import { Button } from "../../components/Button";
 
-export function Welcome() {
+export function Welcome({ navigation }: any) {
+  function handleNavigation() {
+    navigation.navigate("Home");
+  }
+
   return (
     <s.Container>
       <s.Content>
@@ -23,7 +27,7 @@ export function Welcome() {
         <s.Subtitle>Encontre todos os pokémons em um só lugar</s.Subtitle>
       </s.Content>
       <s.Footer>
-        <Button title="Iniciar" />
+        <Button title="Iniciar" onPress={handleNavigation} />
       </s.Footer>
     </s.Container>
   );
