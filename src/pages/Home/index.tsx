@@ -4,8 +4,7 @@ import * as s from "./styles";
 import api from "../../services/api";
 import { FlatList } from "react-native";
 import { Card, Pokemon, PokemonType } from "../../components/Card";
-
-// TODO: organizar entidades do projeto
+import { Load } from "../../components/Load";
 
 export type GetMoreInfoResponse = {
   id: number;
@@ -14,13 +13,15 @@ export type GetMoreInfoResponse = {
 
 export function Home({ navigation }: any) {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
     async function getPokemonsList() {
       // TODO: paginação
-      // const response = await api.get("/pokemon?limit=1279");
-      const response = await api.get("/pokemon?limit=50");
+      const response = await api.get("/pokemon?limit=1279");
       const { results } = response.data;
+
+      console.log(results.length);
 
       const payloadPokemons = await Promise.all(
         results.map(async (pokemon: Pokemon) => {
@@ -35,6 +36,7 @@ export function Home({ navigation }: any) {
       );
 
       setPokemons(payloadPokemons);
+      setLoad(false);
     }
 
     getPokemonsList();
@@ -56,23 +58,34 @@ export function Home({ navigation }: any) {
   }
 
   return (
-    <s.Container>
-      <FlatList
-        ListHeaderComponent={
-          <>
-            <s.Header source={pokeballHeader}></s.Header>
-            <s.Title>Pokédex</s.Title>
-          </>
-        }
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-        data={pokemons}
-        keyExtractor={(pokemon) => pokemon.id.toString()}
-        renderItem={({ item: pokemon }) => (
-          <Card data={pokemon} onPress={() => handleNavigation(pokemon.id)} />
-        )}
-      />
-    </s.Container>
+    <>
+      {load ? (
+        <s.LoadingScreen>
+          <Load />
+        </s.LoadingScreen>
+      ) : (
+        <s.Container>
+          <FlatList
+            ListHeaderComponent={
+              <>
+                <s.Header source={pokeballHeader}></s.Header>
+                <s.Title>Pokédex</s.Title>
+              </>
+            }
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+            }}
+            data={pokemons}
+            keyExtractor={(pokemon) => pokemon.id.toString()}
+            renderItem={({ item: pokemon }) => (
+              <Card
+                data={pokemon}
+                onPress={() => handleNavigation(pokemon.id)}
+              />
+            )}
+          />
+        </s.Container>
+      )}
+    </>
   );
 }

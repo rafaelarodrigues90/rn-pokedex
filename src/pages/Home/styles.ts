@@ -27,3 +27,8 @@ export const Title = styled.Text`
     font-weight: bold;
   `}
 `
+
+export const LoadingScreen = styled.View`
+  flex: 1;
+  justify-content: center;
+`
