@@ -10,7 +10,7 @@ export default {
       white: '#FFFFFF',
       black: '#17171B',
       grey: '#747476',
-      number: 'rgba(23, 23, 27, 0.6)',
+      light_text: 'rgba(23, 23, 27, 0.6)',
     },
     backgroundTypes: {
       water: '#58ABF6',
