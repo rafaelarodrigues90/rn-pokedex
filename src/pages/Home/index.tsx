@@ -18,10 +18,8 @@ export function Home({ navigation }: any) {
   useEffect(() => {
     async function getPokemonsList() {
       // TODO: paginação
-      const response = await api.get("/pokemon?limit=1279");
+      const response = await api.get("/pokemon?limit=3000&offset=0");
       const { results } = response.data;
-
-      console.log(results.length);
 
       const payloadPokemons = await Promise.all(
         results.map(async (pokemon: Pokemon) => {
@@ -64,6 +62,7 @@ export function Home({ navigation }: any) {
           <Load />
         </s.LoadingScreen>
       ) : (
+        // TODO: talvez buscar alternativa ao flatlist
         <s.Container>
           <FlatList
             ListHeaderComponent={
