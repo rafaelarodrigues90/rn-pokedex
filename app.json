@@ -12,7 +12,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rafaelarodrigues90.pokedex"
+    },
+    "android": {
+      "package": "com.rafaelarodrigues90.pokedex"
     }
   }
 }
